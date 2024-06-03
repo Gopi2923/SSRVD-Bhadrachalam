@@ -10,7 +10,7 @@ function createWindow() {
     autoHideMenuBar: true,
     resizable: false,
     frame: true,
-    kiosk: true, 
+    // kiosk: true, 
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
