@@ -1,18 +1,13 @@
-import React from 'react';
-import './App.css';
+import WelcomePage from './Components/WelcomePage/WelcomePage'
 
-const App = () => {
-  const handleClick = () => {
-    alert('Button clicked! Starting ticket process...');
-    // Add your ticket process logic here
-  };
+function App() {
+  
 
   return (
-    <div className="Welcome-page">
-      <h1>SREE SEETHAARAMACHANDRA SWAMY VAARI DEVASTHANAM - Bhadrachalam</h1>
-      <button onClick={handleClick} className='welcome-btn'>Click here to get tickets</button>
-    </div>
-  );
-};
+    <>
+     <WelcomePage />
+    </>
+  )
+}
 
-export default App;
+export default App
