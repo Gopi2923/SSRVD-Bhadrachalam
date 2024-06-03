@@ -1,0 +1,36 @@
+.Welcome-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #e0e0e0;
+  font-family: 'Poppins', sans-serif;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #AB0112;
+}
+
+.welcome-btn {
+  border: 0;
+  outline: 0;
+  width: 300px;
+  height: 100px;
+  margin-top: 30px;
+  font-size: 25px;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 22px;
+  cursor: pointer;
+  background: linear-gradient(270deg, #ff994f, #fa6d86);
+  color: #fff;
+  transition: background 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.welcome-btn:hover {
+  background: linear-gradient(270deg, #fa6d86, #ff994f); /* Change gradient on hover */
+}
