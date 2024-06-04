@@ -1,11 +1,22 @@
+// src/Components/WelcomePage/WelcomePage.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './WelcomePage.css';
+import logo from '../../assets/logo.png';
 
 const WelcomePage = ({ handleClick }) => {
+  const navigate = useNavigate();
+
+  const handleButtonClick = async () => {
+    await handleClick();
+    navigate('/sevas');
+  };
+
   return (
     <div className="Welcome-page">
-      <h1>SREE SEETHAARAMACHANDRA SWAMY<br></br> VAARI DEVASTHANAM - Bhadrachalam</h1>
-      <button onClick={handleClick} className="welcome-btn">
+      <img src={logo} alt="Temple Logo" className="logo" />
+      <h1>SREE SEETHAARAMACHANDRA SWAMY<br /> VAARI DEVASTHANAM - Bhadrachalam</h1>
+      <button onClick={handleButtonClick} className="welcome-btn">
         Click here to get tickets
       </button>
     </div>
