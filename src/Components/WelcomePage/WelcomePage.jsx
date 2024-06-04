@@ -1,4 +1,3 @@
-// src/Components/WelcomePage/WelcomePage.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WelcomePage.css';

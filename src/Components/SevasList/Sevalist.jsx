@@ -1,4 +1,3 @@
-// src/Components/SevasList/SevasList.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import arrow_icon from '../../assets/arrow_icon.png'
