@@ -12,7 +12,6 @@ const SevasList = ({ sevas }) => {
         <img src={arrow_icon} alt="" /> Back
       </button>
       <div className="sevas-list">
-         {/* Map over sevas data array */}
          {sevas.data && sevas.data.map((seva, index) => (
           <div key={index} className="seva-card">
             <h3>{seva.sevaId} {". "}{seva.sevaName}</h3>
