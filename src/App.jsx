@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-route
 import axios from 'axios';
 import WelcomePage from "./Components/WelcomePage/WelcomePage";
 import SevasList from "./Components/SevasList/SevaList";
+import SevaDetailsForm from './Components/SevaDetailsForm/SevaDetailsForm';
 
 function App() {
   const [sevas, setSevas] = useState([]);
@@ -24,6 +25,7 @@ function App() {
       <Routes>
         <Route path="/" element={<WelcomePage handleClick={handleFetchSevas} />} />
         <Route path="/sevas" element={<SevasList sevas={sevas} />} />
+        <Route path="/sevadetails" element={<SevaDetailsForm />} />
       </Routes>
     </Router>
   );

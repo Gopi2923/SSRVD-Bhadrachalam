@@ -6,6 +6,9 @@ import './SevaList.css';
 const SevasList = ({ sevas }) => {
   const navigate = useNavigate();
 
+  const handleBooknowClick = () => {
+    navigate('/sevadetails')
+  }
   return (
     <div className="sevas-list-page">
       <button className="back-button" onClick={() => navigate('/')}>
@@ -18,7 +21,7 @@ const SevasList = ({ sevas }) => {
             <h3>{seva.sevaId} {". "}{seva.sevaName}</h3>
             <p>Price: ₹{seva.price}/-</p> 
 
-            <button className='booknow-btn'>Book Now</button>
+            <button className='booknow-btn' onClick={handleBooknowClick}>Book Now</button>
           </div>
         ))}
       </div>
