@@ -19,7 +19,7 @@
   background-color: #fa6d86;
 }
 
-.back-button svg {
+.back-button img {
   margin-right: 8px;
 }
 
@@ -47,3 +47,8 @@
   font-size: 1em;
   color: #666;
 }
+
+.rotate-left {
+  transform: rotate(180deg);
+}
+

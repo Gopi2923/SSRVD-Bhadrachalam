@@ -16,7 +16,7 @@ const WelcomePage = ({ handleClick }) => {
       <img src={logo} alt="Temple Logo" className="logo" />
       <h1>SREE SEETHAARAMACHANDRA SWAMY<br /> VAARI DEVASTHANAM - Bhadrachalam</h1>
       <button onClick={handleButtonClick} className="welcome-btn">
-        Click here to get tickets
+        Click here to get tickets <img src="/src/assets/arrow_icon.png" alt="" />
       </button>
     </div>
   );

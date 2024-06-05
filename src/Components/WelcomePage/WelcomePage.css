@@ -16,6 +16,9 @@ h1 {
 }
 
 .welcome-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 0;
   outline: 0;
   width: 300px;
@@ -37,4 +40,8 @@ h1 {
     #fa6d86,
     #ff994f
   ); /* Change gradient on hover */
+}
+
+.welcome-btn img {
+  padding-left: 7px;
 }

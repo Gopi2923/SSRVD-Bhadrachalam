@@ -9,7 +9,7 @@ const SevasList = ({ sevas }) => {
   return (
     <div className="sevas-list-page">
       <button className="back-button" onClick={() => navigate('/')}>
-        <img src={arrow_icon} alt="" /> Back
+        <img src={arrow_icon} alt="" className="rotate-left" /> Back
       </button>
       <div className="sevas-list">
          {sevas.data && sevas.data.map((seva, index) => (
