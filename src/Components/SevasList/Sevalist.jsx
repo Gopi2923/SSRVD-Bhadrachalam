@@ -14,6 +14,7 @@ const SevasList = ({ sevas }) => {
       <div className="sevas-list">
          {sevas.data && sevas.data.map((seva, index) => (
           <div key={index} className="seva-card">
+            <img src="/src/assets/sevaimg.jpg" alt="" />
             <h3>{seva.sevaId} {". "}{seva.sevaName}</h3>
             <p>Price: ₹{seva.price}/-</p> 
 

@@ -31,7 +31,7 @@
 
 .seva-card {
   background: #fff;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -43,9 +43,18 @@
   color: #333;
 }
 
+.seva-card h3:hover {
+  color: #007bff;
+}
 .seva-card p {
   font-size: 1em;
   color: #666;
+}
+
+.seva-card img {
+  width: 200px;
+  height: 150px;
+  border-radius: 5px;
 }
 
 .rotate-left {
