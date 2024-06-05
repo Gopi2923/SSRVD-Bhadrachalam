@@ -15,7 +15,9 @@ const SevasList = ({ sevas }) => {
          {sevas.data && sevas.data.map((seva, index) => (
           <div key={index} className="seva-card">
             <h3>{seva.sevaId} {". "}{seva.sevaName}</h3>
-            <p>Price: ₹{seva.price}</p> 
+            <p>Price: ₹{seva.price}/-</p> 
+
+            <button className='booknow-btn'>Book Now</button>
           </div>
         ))}
       </div>
