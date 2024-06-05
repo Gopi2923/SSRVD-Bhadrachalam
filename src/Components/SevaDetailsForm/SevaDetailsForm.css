@@ -1,0 +1,46 @@
+.seva-details-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .seva-details-form h2 {
+    margin-bottom: 20px;
+    color: #AB0112;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .submit-btn {
+    padding: 10px 20px;
+    border: none;
+    background: linear-gradient(270deg, #ff994f, #fa6d86);
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
