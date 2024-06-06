@@ -27,7 +27,7 @@ const SevaList = ({ sevas }) => {
             style={{ cursor: (seva.isSpecialSeva && seva.SubSevas && seva.SubSevas.length === 0) ? 'not-allowed' : 'pointer' }}
           >
             <img src="/src/assets/sevaimg.jpg" alt="Seva" />
-            <h3>{seva.sevaId}. {seva.sevaName}</h3>
+            <h3> {seva.sevaName}</h3>
           </div>
         ))}
       </div>
