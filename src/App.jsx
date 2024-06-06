@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import WelcomePage from "./Components/WelcomePage/WelcomePage";
-import SevasList from "./Components/SevasList/SevaList";
-import SevaDetailsForm from './Components/SevaDetailsForm/SevaDetailsForm';
-import SubSevasList from './Components/SubSevaList/SubSevaList';
+import SevaList from "./Components/SevasList/SevaList";
+import SubSevaList from './Components/SubSevaList/SubSevaList';
 
 function App() {
   const [sevas, setSevas] = useState([]);
@@ -19,15 +18,13 @@ function App() {
       console.error('Error fetching sevas:', error);
     }
   };
-  
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<WelcomePage handleClick={handleFetchSevas} />} />
-        <Route path="/sevas" element={<SevasList sevas={sevas} />} />
-        <Route path="/sevadetails" element={<SevaDetailsForm />} />
-        <Route path='/subSavas/:sevaId' element={<SubSevasList />} />
+        <Route path="/sevas" element={<SevaList sevas={sevas} />} />
+        <Route path="/subSevas/:sevaId" element={<SubSevaList />} />
       </Routes>
     </Router>
   );
