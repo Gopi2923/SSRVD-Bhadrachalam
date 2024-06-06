@@ -1,33 +1,32 @@
 .sub-sevas-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    cursor: pointer;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  cursor: pointer;
 }
 
 .sub-seva-card {
-    background: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
 
-  .sub-seva-card img {
-    width: 200px;
-    height: 150px;
-    border-radius: 5px;
-  }
+.sub-seva-card img {
+  width: 200px;
+  height: 150px;
+  border-radius: 5px;
+}
 
-  .booknow-btn {
-    border: 0;
-    outline: 0;
-    background: #CB2110;
-    color: #fff;
-    border-radius: 2px;
-    font-size: 16px;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  
+.booknow-btn {
+  border: 0;
+  outline: 0;
+  background: #cb2110;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 16px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
