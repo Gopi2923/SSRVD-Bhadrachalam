@@ -30,3 +30,7 @@
   cursor: pointer;
   margin-bottom: 20px;
 }
+
+.notavailable {
+  text-align: right;
+}

@@ -24,24 +24,28 @@ const SubSevaList = () => {
     fetchSubSevas();
   }, [sevaId]);
 
+  const handleSubSevaClick = (subSeva) => {
+    navigate(`/sevaDetails/${subSeva._id}`, { state: { subSeva } });
+  };
+
   return (
     <div className="sub-sevas-list-page">
       <button className="back-button" onClick={() => navigate('/sevas')}>
         <img src={arrow_icon} alt="Back" className="rotate-left" /> Back
       </button>
       <div className="sub-sevas-list">
-      {subSevas.data && subSevas.data.length > 0 ? (
-        subSevas.data.map((subSeva, index) => (
-          <div key={index} className="sub-seva-card">
-            <img src="/src/assets/sevaimg.jpg" alt="Seva" />
-            <h3>{subSeva.sevaId}. {subSeva.sevaName}</h3>
-            <p>Price: {subSeva.price} /-</p>
-            <button className='booknow-btn'>Book Now</button>
-          </div>
-        ))
-      ) : (
-        <p>No sub-sevas available</p>
-      )}
+        {subSevas.data && subSevas.data.length > 0 ? (
+          subSevas.data.map((subSeva, index) => (
+            <div key={index} className="sub-seva-card" onClick={() => handleSubSevaClick(subSeva)}>
+              <img src="/src/assets/sevaimg.jpg" alt="Seva" />
+              <h3>{subSeva.sevaId}. {subSeva.sevaName}</h3>
+              <p>Price: {subSeva.price} /-</p>
+              <button className='booknow-btn'>Book Now</button>
+            </div>
+          ))
+        ) : (
+          <p className='notavailable'>No Sevas available</p>
+        )}
       </div>
     </div>
   );

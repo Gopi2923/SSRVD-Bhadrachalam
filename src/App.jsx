@@ -4,6 +4,7 @@ import axios from 'axios';
 import WelcomePage from "./Components/WelcomePage/WelcomePage";
 import SevaList from "./Components/SevasList/SevaList";
 import SubSevaList from './Components/SubSevaList/SubSevaList';
+import SevaDetailsForm from './Components/SevaDetailsForm/SevaDetailsForm';
 
 function App() {
   const [sevas, setSevas] = useState([]);
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<WelcomePage handleClick={handleFetchSevas} />} />
         <Route path="/sevas" element={<SevaList sevas={sevas} />} />
         <Route path="/subSevas/:sevaId" element={<SubSevaList />} />
+        <Route path='/sevaDetails/:subSevaId' element={<SevaDetailsForm />} />
       </Routes>
     </Router>
   );
