@@ -5,6 +5,7 @@
   background-repeat: no-repeat; /* Prevents the image from repeating */
   font-family: "Poppins", sans-serif;
   height: 150vh;
+  padding: 20px;
 }
 .seva-details-form {
   display: flex;
