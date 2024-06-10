@@ -1,12 +1,24 @@
+.seva-details {
+  background-image: url('../../assets/nav-header-bg2.png');
+  background-size: cover; /* Ensures the image covers the entire element */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  font-family: "Poppins", sans-serif;
+  height: 150vh;
+}
 .seva-details-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
   background: #fff;
+  width: 50%;
+  max-width: 700px; /* Optional: to limit the maximum width */
+  margin: 0 auto; /* Center horizontally */
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 
 .seva-details-form h2 {
   margin-bottom: 20px;
@@ -42,4 +54,25 @@
   color: #fff;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(270deg, #ab0112, #fa6d86);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.back-button:hover {
+  background: linear-gradient(
+    270deg,
+    #fa6d86,
+    #684328
+  ); 
 }

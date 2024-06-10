@@ -1,11 +1,17 @@
 .sevas-list-page {
   padding: 20px;
+  background-image: url('../../assets/nav-header-bg2.png');
+  background-size: cover; /* Ensures the image covers the entire element */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
 }
 
 .back-button {
   display: flex;
   align-items: center;
-  background-color: #ff994f;
+  background: linear-gradient(270deg, #ab0112, #fa6d86);
   color: white;
   border: none;
   border-radius: 5px;
@@ -16,7 +22,11 @@
 }
 
 .back-button:hover {
-  background-color: #fa6d86;
+  background: linear-gradient(
+    270deg,
+    #fa6d86,
+    #684328
+  ); 
 }
 
 .back-button img {

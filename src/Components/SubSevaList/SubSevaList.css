@@ -1,5 +1,16 @@
+.sub-sevas-list-page {
+  padding: 20px;
+  background-image: url('../../assets/nav-header-bg2.png');
+  background-size: cover; /* Ensures the image covers the entire element */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+}
+
 .sub-sevas-list {
   display: grid;
+  margin-left: 20px;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
   cursor: pointer;

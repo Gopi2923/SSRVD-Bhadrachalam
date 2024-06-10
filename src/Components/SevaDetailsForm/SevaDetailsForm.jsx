@@ -48,7 +48,7 @@ const SevaDetailsForm = () => {
   };
 
   return (
-    <div>
+    <div className='seva-details'>
       <button className='back-button' onClick={() => navigate('/subSevas')}>
         <img src="/src/assets/arrow_icon.png" alt="" className='rotate-left' />
         Back

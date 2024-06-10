@@ -28,6 +28,7 @@ const SevaList = ({ sevas }) => {
           >
             <img src="/src/assets/sevaimg.jpg" alt="Seva" />
             <h3> {seva.sevaName}</h3>
+            <p>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
           </div>
         ))}
       </div>
