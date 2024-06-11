@@ -25,7 +25,7 @@ const SubSevaList = () => {
   }, [sevaId]);
 
   const handleSubSevaClick = (subSeva) => {
-    navigate(`/sevaDetails/${subSeva._id}`, { state: { subSeva } });
+    navigate(`/sevaDetails/${subSeva._id}`, { state: { subSeva, parentSevaId: sevaId } });
   };
 
   return (

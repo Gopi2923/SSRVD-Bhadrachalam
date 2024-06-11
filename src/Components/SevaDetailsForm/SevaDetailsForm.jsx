@@ -5,7 +5,7 @@ import './SevaDetailsForm.css';
 
 const SevaDetailsForm = () => {
   const { state } = useLocation();
-  const { subSeva } = state;
+  const { subSeva, parentSevaId } = state;
   const [formData, setFormData] = useState({
     subSevaName: subSeva.sevaName,
     sevaId: subSeva._id,
@@ -49,7 +49,7 @@ const SevaDetailsForm = () => {
 
   return (
     <div className='seva-details'>
-      <button className='back-button' onClick={() => navigate('/subSevas')}>
+        <button className='back-button' onClick={() => navigate(`/subSevas/${parentSevaId}`)}>
         <img src="/src/assets/arrow_icon.png" alt="" className='rotate-left' />
         Back
       </button>
