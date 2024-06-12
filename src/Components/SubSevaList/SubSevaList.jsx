@@ -7,17 +7,25 @@ import './SubSevaList.css';
 const SubSevaList = () => {
   const { sevaId } = useParams();
   const [subSevas, setSubSevas] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log(`Fetching sub-sevas for sevaId: ${sevaId}`);
     const fetchSubSevas = async () => {
+      setLoading(true);  // Start loading
       try {
-        const response = await axios.get(`http://localhost:3501/sub-sevas/allSubsevas/${sevaId}`);
+        const params = {
+          "getsubServices":true,
+          "seva_type":sevaId
+      };
+        const response = await axios.get('http://localhost:3501/sub-sevas', { params });
         console.log('Fetched sub-sevas:', response.data);
         setSubSevas(response.data);
       } catch (error) {
         console.error('Error fetching sub-sevas:', error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -34,11 +42,14 @@ const SubSevaList = () => {
         <img src={arrow_icon} alt="Back" className="rotate-left" /> Back
       </button>
       <div className="sub-sevas-list">
-        {subSevas.data && subSevas.data.length > 0 ? (
+        {loading ? (
+          <p>Loading...</p>
+        ) : subSevas.data && subSevas.data.length > 0 ? (
           subSevas.data.map((subSeva, index) => (
             <div key={index} className="sub-seva-card" onClick={() => handleSubSevaClick(subSeva)}>
-              <img src="/src/assets/sevaimg.jpg" alt="Seva" />
-              <h3>{subSeva.sevaId}. {subSeva.sevaName}</h3>
+              <img src={subSeva.image} alt="Seva" />
+              <h3>{subSeva.sevaId} {subSeva.seva_english_name}</h3>
+              <h3>{subSeva.sevaId} {subSeva.seva_telugu_name}</h3>
               <p>Price: {subSeva.price} /-</p>
               <button className='booknow-btn'>Book Now</button>
             </div>

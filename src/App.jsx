@@ -11,7 +11,8 @@ function App() {
 
   const handleFetchSevas = async () => {
     try {
-      const response = await axios.get('http://localhost:3501/sevas');
+      const params = { getServices: true };
+      const response = await axios.get('http://localhost:3501/sevas', { params });
       const data = response.data;
       setSevas(data);
       console.log(data);
