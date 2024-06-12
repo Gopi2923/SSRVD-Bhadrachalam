@@ -26,7 +26,8 @@ const SevaList = ({ sevas }) => {
             onClick={() => handleSevaClick(seva)}
             style={{ cursor: (seva.isSpecialSeva && seva.SubSevas && seva.SubSevas.length === 0) ? 'not-allowed' : 'pointer' }}
           >
-            <img src="/src/assets/sevaimg.jpg" alt="Seva" />
+            <img src={seva.image} alt="Seva" />
+            <h3>{seva.seva_type_telugu}</h3>
             <h3> {seva.seva_type}</h3>
             <p>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
           </div>

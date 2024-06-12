@@ -48,8 +48,8 @@ const SubSevaList = () => {
           subSevas.data.map((subSeva, index) => (
             <div key={index} className="sub-seva-card" onClick={() => handleSubSevaClick(subSeva)}>
               <img src={subSeva.image} alt="Seva" />
-              <h3>{subSeva.sevaId} {subSeva.seva_english_name}</h3>
               <h3>{subSeva.sevaId} {subSeva.seva_telugu_name}</h3>
+              <h3>{subSeva.sevaId} {subSeva.seva_english_name}</h3>
               <p>Price: {subSeva.price} /-</p>
               <button className='booknow-btn'>Book Now</button>
             </div>
