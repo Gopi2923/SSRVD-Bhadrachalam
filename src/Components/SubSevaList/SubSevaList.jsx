@@ -88,7 +88,7 @@ const SubSevaList = () => {
           subSevas.data.map((subSeva, index) => {
             const cartItem = cart.find((item) => item._id === subSeva._id);
             return (
-              <div key={index} className="sub-seva-card">
+              <div key={subSeva._id} className="sub-seva-card">
                 <img src={subSeva.image} alt="Seva" />
                 <h3>{subSeva.seva_telugu_name}</h3>
                 <h3>{subSeva.seva_english_name}</h3>
