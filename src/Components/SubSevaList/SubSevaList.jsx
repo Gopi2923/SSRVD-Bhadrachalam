@@ -9,12 +9,11 @@ const SubSevaList = () => {
   const { sevaId } = useParams();
   const [subSevas, setSubSevas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(`Fetching sub-sevas for sevaId: ${sevaId}`);
     const fetchSubSevas = async () => {
       setLoading(true);
       try {
@@ -23,7 +22,6 @@ const SubSevaList = () => {
           seva_type: sevaId,
         };
         const response = await axios.get('http://localhost:3501/sub-sevas', { params });
-        console.log('Fetched sub-sevas:', response.data);
         setSubSevas(response.data);
       } catch (error) {
         console.error('Error fetching sub-sevas:', error);
@@ -35,16 +33,16 @@ const SubSevaList = () => {
     fetchSubSevas();
   }, [sevaId]);
 
-  
-  // const handleSubSevaClick = (subSeva) => {
-  //   navigate(`/sevaDetails/${subSeva._id}`, { state: { subSeva, parentSevaId: sevaId } });
-  // }
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
   const handleAddToCart = (subSeva) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item._id === subSeva._id);
+      const existingItem = prevCart.find((item) => item.service_id === subSeva.service_id);
       if (existingItem) {
         return prevCart.map((item) =>
-          item._id === subSeva._id ? { ...item, quantity: item.quantity + 1 } : item
+          item.service_id === subSeva.service_id ? { ...item, quantity: item.quantity + 1 } : item
         );
       } else {
         return [...prevCart, { ...subSeva, quantity: 1 }];
@@ -56,7 +54,7 @@ const SubSevaList = () => {
     setCart((prevCart) => {
       return prevCart
         .map((item) =>
-          item._id === subSeva._id ? { ...item, quantity: item.quantity + amount } : item
+          item.service_id === subSeva.service_id ? { ...item, quantity: item.quantity + amount } : item
         )
         .filter((item) => item.quantity > 0);
     });
@@ -85,10 +83,10 @@ const SubSevaList = () => {
         {loading ? (
           <p>Loading...</p>
         ) : subSevas.data && subSevas.data.length > 0 ? (
-          subSevas.data.map((subSeva, index) => {
-            const cartItem = cart.find((item) => item._id === subSeva._id);
+          subSevas.data.map((subSeva) => {
+            const cartItem = cart.find((item) => item.service_id === subSeva.service_id);
             return (
-              <div key={subSeva._id} className="sub-seva-card">
+              <div key={subSeva.service_id} className="sub-seva-card">
                 <img src={subSeva.image} alt="Seva" />
                 <h3>{subSeva.seva_telugu_name}</h3>
                 <h3>{subSeva.seva_english_name}</h3>
@@ -115,8 +113,8 @@ const SubSevaList = () => {
             <button className="close-popup-btn" onClick={handleClosePopup}>×</button>
             <h2>Cart Summary</h2>
             <ul>
-              {cart.map((item, index) => (
-                <li key={index}>
+              {cart.map((item) => (
+                <li key={item.service_id}>
                   {item.seva_english_name} - {item.quantity} x {item.price} /- = {item.quantity * item.price} /-
                 </li>
               ))}

@@ -27,7 +27,7 @@ function App() {
         <Route path="/" element={<WelcomePage handleClick={handleFetchSevas} />} />
         <Route path="/sevas" element={<SevaList sevas={sevas} />} />
         <Route path="/subSevas/:sevaId" element={<SubSevaList />} />
-        <Route path='/sevaDetails/:subSevaId' element={<SevaDetailsForm />} />
+        <Route path='/checkout' element={<SevaDetailsForm />} />
       </Routes>
     </Router>
   );
