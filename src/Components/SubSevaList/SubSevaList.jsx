@@ -17,10 +17,7 @@ const SubSevaList = () => {
     const fetchSubSevas = async () => {
       setLoading(true);
       try {
-        const params = {
-          getsubServices: true,
-          seva_type: sevaId,
-        };
+        const params = { getsubServices: true, seva_type: sevaId };
         const response = await axios.get('http://localhost:3501/sub-sevas', { params });
         setSubSevas(response.data);
       } catch (error) {
@@ -128,4 +125,4 @@ const SubSevaList = () => {
   );
 };
 
-export default SubSevaList;
+export default SubSevaList
