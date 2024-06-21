@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import QRCode from 'qrcode.react';
 import './SevaDetailsForm.css';
 
 const SevaDetailsForm = () => {
@@ -13,8 +12,6 @@ const SevaDetailsForm = () => {
     goutram: '',
   });
   const [loading, setLoading] = useState(false);
-  const [paymentLink, setPaymentLink] = useState(null);
-  const [qrCode, setQrCode] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -46,18 +43,12 @@ const SevaDetailsForm = () => {
       booking_date: new Date().toLocaleDateString('en-GB'),
     };
 
-    console.log('Submitting form with data:', payload);
-
     try {
-      const response = await axios.post('http://localhost:3501/user-reciept/createReciept', payload);
-      console.log('Response:', response.data);
+      await axios.post('https://ssrvd.onrender.com/user-reciept/createReciept', payload);
 
       localStorage.removeItem('cart');
 
-      const paymentResponse = await axios.post('http://localhost:3501/payment/create', { amount: payload.total_amount });
-      setPaymentLink(paymentResponse.data.paymentLink);
-      setQrCode(paymentResponse.data.qrCode);
-
+      await checkoutHandler(payload.total_amount);
       setLoading(false);
     } catch (error) {
       console.error('Error submitting form:', error.response ? error.response.data : error.message);
@@ -68,6 +59,67 @@ const SevaDetailsForm = () => {
   const calculateTotalAmount = () => {
     return cart.reduce((total, item) => total + item.quantity * item.price, 0);
   };
+
+  const checkoutHandler = async (total_amount) => {
+    try {
+        const { data: keyResponse } = await axios.get("https://ssrvd.onrender.com/payment-gateway/key");
+        console.log('Key Response:', keyResponse);
+
+        const { data: orderResponse } = await axios.post("https://ssrvd.onrender.com/payment-gateway/create/orderitem", {
+            amount: total_amount * 100,  // Razorpay requires amount in paise
+            currency: "INR"
+        });
+        console.log('Order Response:', orderResponse);
+
+        const order = orderResponse.data;
+
+        const options = {
+            key: keyResponse.key,
+            amount: order.amount,
+            currency: "INR",
+            name: "Seva Booking",
+            description: "Seva booking payment",
+            image: "https://example.com/your-logo.png",
+            order_id: order.id,
+            callback_url: "https://ssrvd.onrender.com/payment-gateway/payment/verify",
+            prefill: {
+                name: formData.name,
+                email: "example@example.com",
+                contact: formData.mobileNumber
+            },
+            notes: {
+                "address": "Devotee Address"
+            },
+            theme: {
+                "color": "#121212"
+            },
+            handler: function(response) {
+                // Handle success
+                console.log('Payment success:', response);
+                navigate('/paymentsuccess', { state: { paymentDetails: response } });
+            },
+            modal: {
+                ondismiss: function() {
+                    console.log("Payment popup closed");
+                }
+            }
+        };
+
+        if (window.Razorpay) {
+            const razor = new window.Razorpay(options);
+            razor.open();
+        } else {
+            console.error('Razorpay SDK is not available');
+        }
+    } catch (error) {
+        console.error('Error initiating payment:', error.response ? error.response.data : error.message);
+    }
+};
+
+  
+  
+  
+  
 
   return (
     <div className='seva-details'>
@@ -103,12 +155,6 @@ const SevaDetailsForm = () => {
         </div>
         <button type="submit" className="submit-btn" disabled={loading}>{loading ? 'Processing...' : 'Make Payment'}</button>
       </form>
-      {qrCode && (
-        <div className="qr-code">
-          <h2>Scan to Pay</h2>
-          <QRCode value={qrCode} />
-        </div>
-      )}
     </div>
   );
 };

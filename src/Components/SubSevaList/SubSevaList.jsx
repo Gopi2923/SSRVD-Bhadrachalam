@@ -18,7 +18,7 @@ const SubSevaList = () => {
       setLoading(true);
       try {
         const params = { getsubServices: true, seva_type: sevaId };
-        const response = await axios.get('http://localhost:3501/sub-sevas', { params });
+        const response = await axios.get('https://ssrvd.onrender.com/sub-sevas', { params });
         setSubSevas(response.data);
       } catch (error) {
         console.error('Error fetching sub-sevas:', error);
