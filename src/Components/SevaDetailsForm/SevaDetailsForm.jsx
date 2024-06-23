@@ -9,7 +9,7 @@ const SevaDetailsForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     mobileNumber: '',
-    goutram: '',
+    // goutram: '',
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const SevaDetailsForm = () => {
       SubmitSevaBooking: true,
       name: formData.name,
       mobileNumber: formData.mobileNumber,
-      goutram: formData.goutram,
+      // goutram: formData.goutram,
       bookingdata: bookingData,
       total_amount: calculateTotalAmount(),
       booking_date: new Date().toLocaleDateString('en-GB'),
@@ -79,7 +79,7 @@ const SevaDetailsForm = () => {
             currency: "INR",
             name: "Seva Booking",
             description: "Seva booking payment",
-            image: "https://example.com/your-logo.png",
+            image: "https://avatars.githubusercontent.com/Gopi2923",
             order_id: order.id,
             callback_url: "https://ssrvd.onrender.com/payment-gateway/payment/verify",
             prefill: {
@@ -137,10 +137,10 @@ const SevaDetailsForm = () => {
           <label htmlFor="mobileNumber">Mobile Number:</label>
           <input type="tel" id="mobileNumber" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} required />
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="goutram">Goutram:</label>
           <input type="text" id="goutram" name="goutram" value={formData.goutram} onChange={handleChange} required />
-        </div>
+        </div> */}
         <h2>Cart Summary</h2>
         <ul>
           {cart.map((item) => (
