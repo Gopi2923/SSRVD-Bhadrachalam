@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import WelcomePage from "./Components/WelcomePage/WelcomePage";
-import SevaList from "./Components/SevasList/SevaList";
+import SevaList from './Components/SevasList/Sevalist';
 import SubSevaList from './Components/SubSevaList/SubSevaList';
 import SevaDetailsForm from './Components/SevaDetailsForm/SevaDetailsForm';
 import PaymentSuccess from './Components/PaymentSuccessPage/PaymentSuccess';
