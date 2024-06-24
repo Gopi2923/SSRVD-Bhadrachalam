@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import QRCode from 'qrcode.react';
 import './SevaDetailsForm.css';
 
 const SevaDetailsForm = () => {
@@ -9,9 +10,9 @@ const SevaDetailsForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     mobileNumber: '',
-    // goutram: '',
   });
   const [loading, setLoading] = useState(false);
+  const [upiLink, setUpiLink] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -37,7 +38,6 @@ const SevaDetailsForm = () => {
       });
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,18 +54,49 @@ const SevaDetailsForm = () => {
       SubmitSevaBooking: true,
       name: formData.name,
       mobileNumber: formData.mobileNumber,
-      // goutram: formData.goutram,
       bookingdata: bookingData,
       total_amount: calculateTotalAmount(),
       booking_date: new Date().toLocaleDateString('en-GB'),
     };
 
     try {
-      await axios.post('https://ssrvd.onrender.com/user-reciept/createReciept', payload);
+      // First API call to create the receipt and get the order_id
+      const receiptResponse = await axios.post('https://ssrvd.onrender.com/user-reciept/createReciept', payload);
+      const orderId = receiptResponse.data.order_id;
+
+      // Second API call to create the transaction with the received order_id
+      const token = '367|qM5tv66Rhk8Tm13DlvDkc92KNwVMvAhOuljLB8tA';
+      const transactionData = {
+        amount: calculateTotalAmount(),
+        description: 'laddu',
+        name: formData.name,
+        email: 'dhanushnm07@gmail.com',
+        mobile: Number(formData.mobileNumber),
+        enabledModesOfPayment: 'upi',
+        payment_method: 'UPI_INTENT',
+        source: 'api',
+        order_id: orderId, // Use the order_id received from the create receipt API
+        user_uuid: 'swp_sm_903dd099-3a9e-4243-ac1e-f83f83c30725',
+        other_info: 'api',
+        encrypt_response: 0
+      };
+
+      const formData2 = new FormData();
+      for (const key in transactionData) {
+        formData2.append(key, transactionData[key]);
+      }
+
+      const transactionResponse = await axios.post('https://www.switchpay.in/api/createTransaction', formData2, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      const { upi_intent_link } = transactionResponse.data;
+      setUpiLink(upi_intent_link);
 
       localStorage.removeItem('cart');
-
-      await checkoutHandler(payload.total_amount);
       setLoading(false);
     } catch (error) {
       console.error('Error submitting form:', error.response ? error.response.data : error.message);
@@ -77,104 +108,48 @@ const SevaDetailsForm = () => {
     return cart.reduce((total, item) => total + item.quantity * item.price, 0);
   };
 
-  const checkoutHandler = async (total_amount) => {
-    try {
-        const { data: keyResponse } = await axios.get("https://ssrvd.onrender.com/payment-gateway/key");
-        console.log('Key Response:', keyResponse);
-
-        const { data: orderResponse } = await axios.post("https://ssrvd.onrender.com/payment-gateway/create/orderitem", {
-            amount: total_amount * 100,  // Razorpay requires amount in paise
-            currency: "INR"
-        });
-        console.log('Order Response:', orderResponse);
-
-        const order = orderResponse.data;
-
-        const options = {
-            key: keyResponse.key,
-            amount: order.amount,
-            currency: "INR",
-            name: "Seva Booking",
-            description: "Seva booking payment",
-            image: "https://avatars.githubusercontent.com/Gopi2923",
-            order_id: order.id,
-            callback_url: "https://ssrvd.onrender.com/payment-gateway/payment/verify",
-            prefill: {
-                name: formData.name,
-                email: "example@example.com",
-                contact: formData.mobileNumber
-            },
-            notes: {
-                "address": "Devotee Address"
-            },
-            theme: {
-                "color": "#121212"
-            },
-            handler: function(response) {
-                // Handle success
-                console.log('Payment success:', response);
-                response.amount = total_amount;
-                navigate('/paymentsuccess', { state: { paymentDetails: response } });
-            },
-            modal: {
-                ondismiss: function() {
-                    console.log("Payment popup closed");
-                }
-            }
-        };
-
-        if (window.Razorpay) {
-            const razor = new window.Razorpay(options);
-            razor.open();
-        } else {
-            console.error('Razorpay SDK is not available');
-        }
-    } catch (error) {
-        console.error('Error initiating payment:', error.response ? error.response.data : error.message);
-    }
-};
-
-  
-  
-  
-  
-
   return (
     <div className='seva-details'>
       <button className='back-button' onClick={() => navigate(-1)}>
         <img src="/src/assets/arrow_icon.png" alt="" className='rotate-left' />
         Back
       </button>
-      <form className="seva-details-form" onSubmit={handleSubmit}>
-        <h1>Devotee Details</h1>
-        <div className="form-group">
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}  pattern="[A-Za-z\s]+"
-             title="Please enter only letters" required />
+      {!upiLink ? (
+        <form className="seva-details-form" onSubmit={handleSubmit}>
+          <h1>Devotee Details</h1>
+          <div className="form-group">
+            <label htmlFor="name">Name:</label>
+            <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}  pattern="[A-Za-z\s]+"
+               title="Please enter only letters" required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="mobileNumber">Mobile Number:</label>
+            <input type="tel" id="mobileNumber" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} pattern="\d{10}"
+               title="Please enter exactly 10 digits" required />
+          </div>
+          <h2>Cart Summary</h2>
+          <ul>
+            {cart.map((item) => (
+              <li key={item.service_id}>
+                {item.seva_english_name} - {item.quantity} x {item.price} /- = {item.quantity * item.price} /-
+              </li>
+            ))}
+          </ul>
+          <div className="form-group">
+            <label htmlFor="totalAmount">Total Amount:</label>
+            <input type="text" id="totalAmount" name="totalAmount" value={calculateTotalAmount()} readOnly />
+          </div>
+          <button type="submit" className="submit-btn" disabled={loading}>{loading ? 'Processing...' : 'Make Payment'}</button>
+        </form>
+      ) : (
+        <div className="qr-code-container">
+           <div className="qr-code-card">
+            <h2>Total Amount: {calculateTotalAmount()} /-</h2>
+            <h2>Scan to Pay</h2>
+            <QRCode value={upiLink} size={256} />
+          </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="mobileNumber">Mobile Number:</label>
-          <input type="tel" id="mobileNumber" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} pattern="\d{10}"
-             title="Please enter exactly 10 digits" required />
-        </div>
-        {/* <div className="form-group">
-          <label htmlFor="goutram">Goutram:</label>
-          <input type="text" id="goutram" name="goutram" value={formData.goutram} onChange={handleChange} required />
-        </div> */}
-        <h2>Cart Summary</h2>
-        <ul>
-          {cart.map((item) => (
-            <li key={item.service_id}>
-              {item.seva_english_name} - {item.quantity} x {item.price} /- = {item.quantity * item.price} /-
-            </li>
-          ))}
-        </ul>
-        <div className="form-group">
-          <label htmlFor="totalAmount">Total Amount:</label>
-          <input type="text" id="totalAmount" name="totalAmount" value={calculateTotalAmount()} readOnly />
-        </div>
-        <button type="submit" className="submit-btn" disabled={loading}>{loading ? 'Processing...' : 'Make Payment'}</button>
-      </form>
+      )}
     </div>
   );
 };
