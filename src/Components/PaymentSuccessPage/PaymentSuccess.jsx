@@ -21,7 +21,7 @@ const PaymentSuccess = () => {
             <div className="payment-details">
               <p>Payment ID: {paymentDetails.razorpay_payment_id}</p>
               <p>Order ID: {paymentDetails.razorpay_order_id}</p>
-              <p>Amount: {paymentDetails.amount / 100} INR</p>
+              <p>Amount: {paymentDetails.amount}/- INR</p>
             </div>
           )}
           <p>Thank you for your payment. Your booking has been confirmed.</p>

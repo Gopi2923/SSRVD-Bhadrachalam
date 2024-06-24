@@ -96,6 +96,7 @@ const SevaDetailsForm = () => {
             handler: function(response) {
                 // Handle success
                 console.log('Payment success:', response);
+                response.amount = total_amount;
                 navigate('/paymentsuccess', { state: { paymentDetails: response } });
             },
             modal: {
