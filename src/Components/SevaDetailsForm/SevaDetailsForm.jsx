@@ -16,11 +16,28 @@ const SevaDetailsForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === 'mobileNumber' ? value.replace(/\D/g, '') : value,
-    });
+    if (name === 'name') {
+      const cleanedValue = value.replace(/[^a-zA-Z\s]/g, ''); // Remove non-letter characters
+      setFormData({
+        ...formData,
+        [name]: cleanedValue,
+      });
+    } else if (name === 'mobileNumber') {
+      const cleanedValue = value.replace(/\D/g, ''); // Remove non-digit characters
+      if (cleanedValue.length <= 10) {
+        setFormData({
+          ...formData,
+          [name]: cleanedValue,
+        });
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -132,11 +149,13 @@ const SevaDetailsForm = () => {
         <h1>Devotee Details</h1>
         <div className="form-group">
           <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}  pattern="[A-Za-z\s]+"
+             title="Please enter only letters" required />
         </div>
         <div className="form-group">
           <label htmlFor="mobileNumber">Mobile Number:</label>
-          <input type="tel" id="mobileNumber" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} required />
+          <input type="tel" id="mobileNumber" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} pattern="\d{10}"
+             title="Please enter exactly 10 digits" required />
         </div>
         {/* <div className="form-group">
           <label htmlFor="goutram">Goutram:</label>

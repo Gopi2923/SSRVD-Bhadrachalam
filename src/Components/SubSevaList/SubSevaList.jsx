@@ -95,7 +95,7 @@ const SubSevaList = () => {
                     <button onClick={() => handleQuantityChange(subSeva, 1)}>+</button>
                   </div>
                 ) : (
-                  <button className='booknow-btn' onClick={() => handleAddToCart(subSeva)}>Add to Cart</button>
+                  <button className='booknow-btn' onClick={() => handleAddToCart(subSeva)}>Add to Cart / కార్ట్ లో పెట్టండి</button>
                 )}
               </div>
             );
