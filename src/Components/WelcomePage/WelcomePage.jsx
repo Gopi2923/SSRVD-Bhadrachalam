@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WelcomePage.css';
+import { TailSpin } from 'react-loader-spinner';
 import logo from '../../assets/logo.png';
 
 const WelcomePage = ({ handleClick }) => {
@@ -36,7 +37,7 @@ const WelcomePage = ({ handleClick }) => {
       <h2 className='telugu-title'>శ్రీ సీతారామచంద్ర స్వామి వారి దేవస్థానం</h2>
       <h3 className='telugu-title2'>భద్రాచలం, భద్రాద్రి కొత్తగూడెం జిల్లా</h3>
       <button onClick={handleButtonClick} className="welcome-btn" disabled={loading}>
-        {loading ? 'Loading...' : 'Click here to get tickets'}
+        {loading ? <> <span>Loading...</span>  <TailSpin color="#fff" height={34} width={44}/> </>: 'Click here to get tickets'}
         {!loading && <img src="/src/assets/arrow_icon.png" alt="" />}
       </button>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
