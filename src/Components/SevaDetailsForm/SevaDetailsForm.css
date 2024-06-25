@@ -53,6 +53,7 @@
 }
 
 .submit-btn {
+  display: flex;
   padding: 20px 30px;
   margin: 30px;
   border: none;
@@ -103,4 +104,8 @@
 .qr-code-card h2 {
   margin: 10px 0;
 }
-
+/* Loader styles */
+.submit-btn svg {
+  vertical-align: middle;
+  margin-left: 8px;
+}

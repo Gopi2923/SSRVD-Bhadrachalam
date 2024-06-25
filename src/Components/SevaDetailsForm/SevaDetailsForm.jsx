@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import QRCode from 'qrcode.react';
+import { TailSpin } from 'react-loader-spinner';
 import './SevaDetailsForm.css';
 
 const SevaDetailsForm = () => {
@@ -139,7 +140,14 @@ const SevaDetailsForm = () => {
             <label htmlFor="totalAmount">Total Amount:</label>
             <input type="text" id="totalAmount" name="totalAmount" value={calculateTotalAmount()} readOnly />
           </div>
-          <button type="submit" className="submit-btn" disabled={loading}>{loading ? 'Processing...' : 'Make Payment'}</button>
+          <button type="submit" className="submit-btn" disabled={loading}> {loading ? (
+            <>
+            <span>Processing</span>
+              <TailSpin color="#fff" height={24} width={24}/>
+              </>
+            ) : (
+              'Make Payment'
+            )}</button>
         </form>
       ) : (
         <div className="qr-code-container">
