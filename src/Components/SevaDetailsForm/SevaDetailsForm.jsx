@@ -97,6 +97,16 @@ const SevaDetailsForm = () => {
       const { upi_intent_link } = transactionResponse.data;
       setUpiLink(upi_intent_link);
 
+        // Third API call to update the transactionId and orderId
+        await axios.post('https://ssrvd.onrender.com/payment-gateway/update/transactionId/orderId', {
+          order_id: orderId,
+          transaction_id: transactionResponse.data.transaction_id
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
       localStorage.removeItem('cart');
       setLoading(false);
     } catch (error) {
