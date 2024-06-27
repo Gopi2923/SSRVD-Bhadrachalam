@@ -6,7 +6,7 @@ const PaymentSuccess = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { paymentDetails } = location.state || {};
+  const { transactionId, totalAmount } = location.state || {};
 
   return (
     <>
@@ -17,13 +17,12 @@ const PaymentSuccess = () => {
       <div className="payment-success">
         <div>
           <h1>Payment Successful</h1>
-          {paymentDetails && (
+          {/* {paymentDetails && ( */}
             <div className="payment-details">
-              <p>Payment ID: {paymentDetails.razorpay_payment_id}</p>
-              <p>Order ID: {paymentDetails.razorpay_order_id}</p>
-              <p>Amount: {paymentDetails.amount}/- INR</p>
+              <p>Payment ID: {transactionId}</p>
+              <p>Amount: {totalAmount}/- INR</p>
             </div>
-          )}
+          {/* )} */}
           <p>Thank you for your payment. Your booking has been confirmed.</p>
         </div>
       </div>

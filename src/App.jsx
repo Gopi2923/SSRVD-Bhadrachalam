@@ -6,6 +6,7 @@ import SevaList from './Components/SevasList/Sevalist';
 import SubSevaList from './Components/SubSevaList/SubSevaList';
 import SevaDetailsForm from './Components/SevaDetailsForm/SevaDetailsForm';
 import PaymentSuccess from './Components/PaymentSuccessPage/PaymentSuccess';
+import PaymentFailure from './Components/PaymentFailure/PaymentFailure';
 
 function App() {
   const [sevas, setSevas] = useState([]);
@@ -30,6 +31,7 @@ function App() {
         <Route path="/subSevas/:sevaId" element={<SubSevaList />} />
         <Route path='/checkout' element={<SevaDetailsForm />} />
         <Route path='/paymentsuccess' element={<PaymentSuccess />} />
+        <Route path='/paymentfailure' element={<PaymentFailure />} />
       </Routes>
     </Router>
   );

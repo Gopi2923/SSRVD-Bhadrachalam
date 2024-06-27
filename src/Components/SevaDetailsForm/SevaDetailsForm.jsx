@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import QRCode from 'qrcode.react';
 import { TailSpin } from 'react-loader-spinner';
@@ -14,7 +14,47 @@ const SevaDetailsForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [upiLink, setUpiLink] = useState('');
+  const [transactionId, setTransactionId] = useState('');
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let interval;
+    let timeout;
+    if (transactionId && !paymentSuccess) {
+      interval = setInterval(() => checkPaymentStatus(transactionId), 3000); // Poll every 5 seconds
+
+    //Stop checking after 5 minutes (300000 ms)
+    timeout = setTimeout(() => {
+      clearInterval(interval);
+      if(!paymentSuccess) {
+       navigate('/paymentfailure', {
+        state: {
+          transactionId,
+          totalAmount: calculateTotalAmount(),
+          errorMessage: 'Payment timed out. Please try again'
+        }
+       });
+      }
+    }, 120000);
+  }
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout)
+    };
+  }, [transactionId, paymentSuccess]);
+
+  const checkPaymentStatus = async (transactionId) => {
+    try {
+      const response = await axios.get(`https://ssrvd.onrender.com/payment-gateway/paymentStatus/${transactionId}`);
+      if (response.data.data === true) {
+        setPaymentSuccess(true);
+        navigate('/paymentsuccess', { state: { transactionId: transactionId, totalAmount: calculateTotalAmount() }}); // Redirect to paymentSuccess page
+      }
+    } catch (error) {
+      console.error('Error checking payment status:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,18 +134,19 @@ const SevaDetailsForm = () => {
         }
       });
 
-      const { upi_intent_link } = transactionResponse.data;
+      const { upi_intent_link, transaction_id } = transactionResponse.data;
       setUpiLink(upi_intent_link);
+      setTransactionId(transaction_id);
 
-        // Third API call to update the transactionId and orderId
-        await axios.post('https://ssrvd.onrender.com/payment-gateway/update/transactionId/orderId', {
-          order_id: orderId,
-          transaction_id: transactionResponse.data.transaction_id
-        }, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
+      // Third API call to update the transactionId and orderId
+      await axios.post('https://ssrvd.onrender.com/payment-gateway/update/transactionId/orderId', {
+        order_id: orderId,
+        transaction_id: transaction_id
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
       localStorage.removeItem('cart');
       setLoading(false);
@@ -150,14 +191,16 @@ const SevaDetailsForm = () => {
             <label htmlFor="totalAmount">Total Amount:</label>
             <input type="text" id="totalAmount" name="totalAmount" value={calculateTotalAmount()} readOnly />
           </div>
-          <button type="submit" className="submit-btn" disabled={loading}> {loading ? (
-            <>
-            <span>Processing</span>
-              <TailSpin color="#fff" height={24} width={24}/>
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? (
+              <>
+                <TailSpin color="#fff" height={24} width={24} />
+                <span style={{ marginLeft: '10px' }}>Processing...</span>
               </>
             ) : (
               'Make Payment'
-            )}</button>
+            )}
+          </button>
         </form>
       ) : (
         <div className="qr-code-container">
