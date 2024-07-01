@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import QRCode from 'qrcode.react';
 import { TailSpin } from 'react-loader-spinner';
+import arrow_icon from './../../assets/arrow_icon.png'
 import './SevaDetailsForm.css';
 
 const SevaDetailsForm = () => {
@@ -164,7 +165,7 @@ const SevaDetailsForm = () => {
   return (
     <div className='seva-details'>
       <button className='back-button' onClick={() => navigate(-1)}>
-        <img src="/src/assets/arrow_icon.png" alt="" className='rotate-left' />
+        <img src={arrow_icon} alt="back" className='rotate-left' />
         Back
       </button>
       {!upiLink ? (

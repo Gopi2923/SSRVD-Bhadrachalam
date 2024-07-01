@@ -110,3 +110,7 @@
   vertical-align: middle;
   margin-left: 8px;
 }
+
+.rotate-left {
+  transform: rotate(180deg);
+}
