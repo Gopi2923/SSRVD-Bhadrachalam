@@ -107,7 +107,7 @@ const SubSevaList = () => {
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
-            <button className="close-popup-btn" onClick={handleClosePopup}>×</button>
+            <button className="close-popup-btn" onClick={handleClosePopup}>X</button>
             <h2>Cart Summary</h2>
             <ul>
               {cart.map((item) => (
