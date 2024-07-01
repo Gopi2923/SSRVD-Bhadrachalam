@@ -12,7 +12,7 @@
 
 .payment-success h1 {
   font-size: 3.5rem;
-  color: #4caf50;
+  color: green;
   margin-bottom: 20px;
 }
 
@@ -49,4 +49,14 @@
 
 .back-button:hover {
   background: linear-gradient(270deg, #fa6d86, #684328);
+}
+
+.print-button {
+  background: linear-gradient(270deg, #ab0112, #fa6d86);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor:pointer;
+  font-size: 20px;
 }

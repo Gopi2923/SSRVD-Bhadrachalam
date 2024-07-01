@@ -49,7 +49,8 @@ const SevaDetailsForm = () => {
       const response = await axios.get(`https://ssrvd.onrender.com/payment-gateway/paymentStatus/${transactionId}`);
       if (response.data.data === true) {
         setPaymentSuccess(true);
-        navigate('/paymentsuccess', { state: { transactionId: transactionId, totalAmount: calculateTotalAmount() }}); // Redirect to paymentSuccess page
+        navigate('/paymentsuccess', { state: { transactionId: transactionId, totalAmount: calculateTotalAmount(), cart }}); // Redirect to paymentSuccess page
+        localStorage.removeItem('cart');
       }
     } catch (error) {
       console.error('Error checking payment status:', error);
@@ -108,7 +109,7 @@ const SevaDetailsForm = () => {
       // Second API call to create the transaction with the received order_id
       const token = '367|qM5tv66Rhk8Tm13DlvDkc92KNwVMvAhOuljLB8tA';
       const transactionData = {
-        amount: calculateTotalAmount(),
+        amount: '1',
         description: 'laddu',
         name: formData.name,
         email: 'dhanushnm07@gmail.com',
@@ -148,7 +149,7 @@ const SevaDetailsForm = () => {
         }
       });
 
-      localStorage.removeItem('cart');
+      // localStorage.removeItem('cart');
       setLoading(false);
     } catch (error) {
       console.error('Error submitting form:', error.response ? error.response.data : error.message);
