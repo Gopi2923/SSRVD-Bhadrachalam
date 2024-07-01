@@ -13,7 +13,7 @@
   }
 
 .payment-failure h1 {
-    color: #f40501;
+    color: red;
     font-size: 3.5rem;
     margin-bottom: 20px;
 }  
