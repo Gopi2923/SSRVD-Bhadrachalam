@@ -3,16 +3,22 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import QRCode from 'qrcode.react';
 import { TailSpin } from 'react-loader-spinner';
-import arrow_icon from './../../assets/arrow_icon.png'
+import arrow_icon from './../../assets/arrow_icon.png';
 import './SevaDetailsForm.css';
 
 const SevaDetailsForm = () => {
   const { state } = useLocation();
   const { cart } = state;
+
+  // Check if all items in the cart have a limitation of '1'
+  const hasOnlyLimitationOne = cart.every(item => item.limitation === '1');
+  const hasLimitationZeroAndOne = cart.some(item => item.limitation === '0') && cart.some(item => item.limitation === '1');
+
   const [formData, setFormData] = useState({
-    name: '',
-    mobileNumber: '',
+    name: hasOnlyLimitationOne ? 'Gopi' : '',
+    mobileNumber: hasOnlyLimitationOne ? '1234567890' : '',
   });
+
   const [loading, setLoading] = useState(false);
   const [upiLink, setUpiLink] = useState('');
   const [transactionId, setTransactionId] = useState('');
@@ -23,25 +29,25 @@ const SevaDetailsForm = () => {
     let interval;
     let timeout;
     if (transactionId && !paymentSuccess) {
-      interval = setInterval(() => checkPaymentStatus(transactionId), 3000); // Poll every 5 seconds
+      interval = setInterval(() => checkPaymentStatus(transactionId), 3000); // Poll every 3 seconds
 
-    //Stop checking after 5 minutes (300000 ms)
-    timeout = setTimeout(() => {
-      clearInterval(interval);
-      if(!paymentSuccess) {
-       navigate('/paymentfailure', {
-        state: {
-          transactionId,
-          totalAmount: calculateTotalAmount(),
-          errorMessage: 'Payment timed out. Please try again'
+      // Stop checking after 2 minutes (120000 ms)
+      timeout = setTimeout(() => {
+        clearInterval(interval);
+        if (!paymentSuccess) {
+          navigate('/paymentfailure', {
+            state: {
+              transactionId,
+              totalAmount: calculateTotalAmount(),
+              errorMessage: 'Payment timed out. Please try again'
+            }
+          });
         }
-       });
-      }
-    }, 120000);
-  }
+      }, 120000);
+    }
     return () => {
       clearInterval(interval);
-      clearTimeout(timeout)
+      clearTimeout(timeout);
     };
   }, [transactionId, paymentSuccess]);
 
@@ -50,7 +56,7 @@ const SevaDetailsForm = () => {
       const response = await axios.get(`https://ssrvd.onrender.com/payment-gateway/paymentStatus/${transactionId}`);
       if (response.data.data === true) {
         setPaymentSuccess(true);
-        navigate('/paymentsuccess', { state: { transactionId: transactionId, totalAmount: calculateTotalAmount(), cart }}); // Redirect to paymentSuccess page
+        navigate('/paymentsuccess', { state: { transactionId: transactionId, totalAmount: calculateTotalAmount(), cart } }); // Redirect to paymentSuccess page
         localStorage.removeItem('cart');
       }
     } catch (error) {
@@ -170,17 +176,21 @@ const SevaDetailsForm = () => {
       </button>
       {!upiLink ? (
         <form className="seva-details-form" onSubmit={handleSubmit}>
-          <h1>Devotee Details</h1>
-          <div className="form-group">
-            <label htmlFor="name">Name:</label>
-            <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}  pattern="[A-Za-z\s]+"
-               title="Please enter only letters" required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="mobileNumber">Mobile Number:</label>
-            <input type="tel" id="mobileNumber" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} pattern="\d{10}"
-               title="Please enter exactly 10 digits" required />
-          </div>
+          {!(hasOnlyLimitationOne && !hasLimitationZeroAndOne) && (
+            <>
+            <h1>Devotee Details</h1>
+              <div className="form-group">
+                <label htmlFor="name">Name:</label>
+                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} pattern="[A-Za-z\s]+"
+                  title="Please enter only letters" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="mobileNumber">Mobile Number:</label>
+                <input type="tel" id="mobileNumber" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} pattern="\d{10}"
+                  title="Please enter exactly 10 digits" required />
+              </div>
+            </>
+          )}
           <h2>Cart Summary</h2>
           <ul>
             {cart.map((item) => (
@@ -206,7 +216,7 @@ const SevaDetailsForm = () => {
         </form>
       ) : (
         <div className="qr-code-container">
-           <div className="qr-code-card">
+          <div className="qr-code-card">
             <h2>Total Amount: {calculateTotalAmount()} /-</h2>
             <h2>Scan to Pay</h2>
             <QRCode value={upiLink} size={256} />
