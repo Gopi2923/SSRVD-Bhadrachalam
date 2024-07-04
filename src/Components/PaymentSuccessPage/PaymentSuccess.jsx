@@ -25,10 +25,6 @@ const PaymentSuccess = () => {
       <h3>Payment Successful</h3>
       <p>Transaction ID: ${transactionId}</p>
       <p>Total Amount Paid: ${totalAmount} INR</p>
-      <p>Thank you for your purchase! We appreciate your devotion and support.</p>
-      <p>For any inquiries, please contact us at:info@atmaparikshan.com</p>
-      <p>Swastha Technovation Private Limited</p>
-      <p>All Rights Reserved.</p>
     </div>
   `;
   printJS({ printable: ticketDetails, type: 'raw-html' });
