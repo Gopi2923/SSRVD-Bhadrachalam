@@ -22,6 +22,7 @@ const SevaDetailsForm = () => {
   const [loading, setLoading] = useState(false);
   const [upiLink, setUpiLink] = useState('');
   const [transactionId, setTransactionId] = useState('');
+  const [orderId, setOrderId] = useState('');
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const navigate = useNavigate();
 
@@ -48,6 +49,7 @@ const SevaDetailsForm = () => {
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
+      localStorage.removeItem('cart');
     };
   }, [transactionId, paymentSuccess]);
 
@@ -58,11 +60,31 @@ const SevaDetailsForm = () => {
         setPaymentSuccess(true);
         navigate('/paymentsuccess', { state: { transactionId: transactionId, totalAmount: calculateTotalAmount(), cart } }); // Redirect to paymentSuccess page
         localStorage.removeItem('cart');
+  
+        // Construct the payload for the POST request
+        const statusUpdatePayload = {
+          updateBookingStatus: true,
+          order_id: orderId,
+          transaction_no: transactionId,
+          status: 'success'
+        };
+  
+        // Make the POST request with the appropriate headers
+        const statusUpdateResponse = await axios.post('https://bhadradritemple.telangana.gov.in/apis/api.php', statusUpdatePayload, {
+          headers: {
+            'Apikey': 'a9e0f8a33497dbe0de8ea0e154d2a090',
+            'Content-Type': 'application/json',
+            'Ver': '1.0'
+          }
+        });
+  
+        console.log('Status update response:', statusUpdateResponse.data);
       }
     } catch (error) {
       console.error('Error checking payment status:', error);
     }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -112,6 +134,7 @@ const SevaDetailsForm = () => {
       // First API call to create the receipt and get the order_id
       const receiptResponse = await axios.post('https://ssrvd.onrender.com/user-reciept/createReciept', payload);
       const orderId = receiptResponse.data.order_id;
+      setOrderId(orderId);
 
       // Second API call to create the transaction with the received order_id
       const token = '367|qM5tv66Rhk8Tm13DlvDkc92KNwVMvAhOuljLB8tA';
