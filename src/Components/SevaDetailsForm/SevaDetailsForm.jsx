@@ -61,22 +61,22 @@ const SevaDetailsForm = () => {
         navigate('/paymentsuccess', { state: { transactionId: transactionId, totalAmount: calculateTotalAmount(), cart } }); // Redirect to paymentSuccess page
         localStorage.removeItem('cart');
   
-        // Construct the payload for the POST request
-        const statusUpdatePayload = {
-          updateBookingStatus: true,
-          order_id: orderId,
-          transaction_no: transactionId,
-          status: 'success'
-        };
-  
-        // Make the POST request with the appropriate headers
-        const statusUpdateResponse = await axios.post('https://bhadradritemple.telangana.gov.in/apis/api.php', statusUpdatePayload, {
-          headers: {
-            'Apikey': 'a9e0f8a33497dbe0de8ea0e154d2a090',
-            'Content-Type': 'application/json',
-            'Ver': '1.0'
-          }
-        });
+         // Construct the payload for the POST request
+       const statusUpdatePayload = {
+        updateBookingStatus: true,
+        order_id: orderId,
+        transaction_no: transactionId,
+        status: 'success'
+      };
+
+      // Make the POST request with the appropriate headers
+      const statusUpdateResponse = await axios.post('/apis/api.php', statusUpdatePayload, {
+        headers: {
+          'Apikey': 'a9e0f8a33497dbe0de8ea0e154d2a090',
+          'Content-Type': 'application/json',
+          'Ver': '1.0',
+        },
+      });
   
         console.log('Status update response:', statusUpdateResponse.data);
       }

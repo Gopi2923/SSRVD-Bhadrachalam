@@ -1,10 +1,17 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 3000
+    port: 3000,
+    proxy: {
+      '/apis': {
+        target: 'https://bhadradritemple.telangana.gov.in',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/apis/, ''),
+        secure: false, // This can be true or false depending on your SSL certificate
+      },
+    },
   },
   plugins: [react()],
-})
+});
