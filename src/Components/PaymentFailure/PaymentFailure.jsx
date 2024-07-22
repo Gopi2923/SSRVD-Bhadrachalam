@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import arrowIcon from '../../assets/arrow_icon.png'
 import './PaymentFailure.css';
 
 const PaymentFailure = () => {
@@ -12,7 +13,7 @@ const PaymentFailure = () => {
   return (
     <>
       <button className="back-button" onClick={() => navigate("/")}>
-        <img src="/src/assets/arrow_icon.png" alt="Back" className="rotate-left" />
+        <img src={arrowIcon} alt="Back" className="rotate-left" />
         Back
       </button>
       <div className="payment-failure">
