@@ -4,6 +4,7 @@ import printJS from 'print-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import logo from '../../assets/logo.png'
+import arrowIcon from '../../assets/arrow_icon.png'
 import './PaymentSuccess.css';
 
 const PaymentSuccess = () => {
@@ -34,7 +35,7 @@ const PaymentSuccess = () => {
   return (
     <>
       <button className="back-button" onClick={() => navigate("/")}>
-        <img src="/src/assets/arrow_icon.png" alt="" className="rotate-left" />
+        <img src={arrowIcon} alt="" className="rotate-left" />
         Back
       </button>
       <div className="payment-success">

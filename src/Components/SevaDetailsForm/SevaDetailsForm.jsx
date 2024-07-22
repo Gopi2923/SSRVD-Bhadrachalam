@@ -70,7 +70,7 @@ const SevaDetailsForm = () => {
       };
 
       // Make the POST request with the appropriate headers
-      const statusUpdateResponse = await axios.post('/apis/api.php', statusUpdatePayload, {
+      const statusUpdateResponse = await axios.post('https://ssrvd.onrender.com/payment-gateway/updateBhadhraChalam', statusUpdatePayload, {
         headers: {
           'Apikey': 'a9e0f8a33497dbe0de8ea0e154d2a090',
           'Content-Type': 'application/json',
