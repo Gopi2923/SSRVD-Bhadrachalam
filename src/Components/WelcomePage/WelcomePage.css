@@ -42,7 +42,20 @@ h1 {
   cursor: pointer;
   background: linear-gradient(270deg, #ab0112, #fa6d86);
   color: #fff;
-  transition: background 0.3s ease; /* Smooth transition for hover effect */
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .welcome-btn:hover {
