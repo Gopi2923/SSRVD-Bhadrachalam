@@ -56,29 +56,29 @@ const SevaDetailsForm = () => {
   const checkPaymentStatus = async (transactionId) => {
     try {
       const response = await axios.get(`https://ssrvd.onrender.com/payment-gateway/paymentStatus/${transactionId}`);
-      if (response.data.data === true) {
+      if (response.data.data.success === true) {
         setPaymentSuccess(true);
-        navigate('/paymentsuccess', { state: { transactionId: transactionId, totalAmount: calculateTotalAmount(), cart } }); // Redirect to paymentSuccess page
+        navigate('/paymentsuccess', { state: { transactionId: response.data.data.transaction_id, totalAmount: calculateTotalAmount(), cart } }); // Redirect to paymentSuccess page
         localStorage.removeItem('cart');
   
          // Construct the payload for the POST request
-       const statusUpdatePayload = {
-        updateBookingStatus: true,
-        order_id: orderId,
-        transaction_no: transactionId,
-        status: 'success'
-      };
+      //  const statusUpdatePayload = {
+      //   updateBookingStatus: true,
+      //   order_id: orderId,
+      //   transaction_no: transactionId,
+      //   status: 'success'
+      // };
 
-      // Make the POST request with the appropriate headers
-      const statusUpdateResponse = await axios.post('https://ssrvd.onrender.com/payment-gateway/updateBhadhraChalam', statusUpdatePayload, {
-        headers: {
-          'Apikey': 'a9e0f8a33497dbe0de8ea0e154d2a090',
-          'Content-Type': 'application/json',
-          'Ver': '1.0',
-        },
-      });
+      // // Make the POST request with the appropriate headers
+      // const statusUpdateResponse = await axios.post('https://ssrvd.onrender.com/payment-gateway/updateBhadhraChalam', statusUpdatePayload, {
+      //   headers: {
+      //     'Apikey': 'a9e0f8a33497dbe0de8ea0e154d2a090',
+      //     'Content-Type': 'application/json',
+      //     'Ver': '1.0',
+      //   },
+      // });
   
-        console.log('Status update response:', statusUpdateResponse.data);
+      //   console.log('Status update response:', statusUpdateResponse.data);
       }
     } catch (error) {
       console.error('Error checking payment status:', error);
@@ -134,7 +134,7 @@ const SevaDetailsForm = () => {
       // First API call to create the receipt and get the order_id
       const receiptResponse = await axios.post('https://ssrvd.onrender.com/user-reciept/createReciept', payload);
       const orderId = receiptResponse.data.order_id;
-      setOrderId(orderId);
+      setTransactionId(orderId);
 
       // Second API call to create the transaction with the received order_id
       const token = '367|qM5tv66Rhk8Tm13DlvDkc92KNwVMvAhOuljLB8tA';
@@ -158,26 +158,41 @@ const SevaDetailsForm = () => {
         formData2.append(key, transactionData[key]);
       }
 
-      const transactionResponse = await axios.post('https://www.switchpay.in/api/createTransaction', formData2, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
+      if(receiptResponse){
+        let body = {
+          order_id: receiptResponse.data.order_id
         }
-      });
-
-      const { upi_intent_link, transaction_id } = transactionResponse.data;
-      setUpiLink(upi_intent_link);
-      setTransactionId(transaction_id);
+        console.log("body",body)
+        const transactionResponse = await axios.post('https://ssrvd.onrender.com/payment-gateway/generatePaymentLink', body, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        console.log("transactionResponse",transactionResponse)
+        console.log("transactionResponse.data.short_url",transactionResponse.data.short_url)
+        const  upi_intent_link  = transactionResponse.data.paymentLink.short_url;
+        setUpiLink(upi_intent_link);
+        console.log(upi_intent_link)
+        setLoading(false);
+      }
+      // const transactionId = await axios.post('https://ssrvd.onrender.com/payment-gateway/getTransactionId', body, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // });
+     
+      // console.log("transactionId.transaction_id",transactionId.transaction_id)
+      // setTransactionId(transactionId.transaction_id);
 
       // Third API call to update the transactionId and orderId
-      await axios.post('https://ssrvd.onrender.com/payment-gateway/update/transactionId/orderId', {
-        order_id: orderId,
-        transaction_id: transaction_id
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      // await axios.post('https://ssrvd.onrender.com/payment-gateway/update/transactionId/orderId', {
+      //   order_id: orderId,
+      //   transaction_id: transaction_id
+      // }, {
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   }
+      // });
 
       // localStorage.removeItem('cart');
       setLoading(false);
