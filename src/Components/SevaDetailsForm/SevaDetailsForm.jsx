@@ -44,7 +44,7 @@ const SevaDetailsForm = () => {
             }
           });
         }
-      }, 120000);
+      }, 180000);
     }
     return () => {
       clearInterval(interval);
