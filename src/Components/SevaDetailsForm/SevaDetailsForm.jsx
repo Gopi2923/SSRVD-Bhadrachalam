@@ -28,7 +28,7 @@ const SevaDetailsForm = () => {
   const [orderId, setOrderId] = useState('');
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentFailed, setPaymentFailed] = useState(false);
-  const [countdown, setCountdown] = useState(120);
+  // const [countdown, setCountdown] = useState(120);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,17 +55,17 @@ const SevaDetailsForm = () => {
   }, [transactionId, paymentSuccess, paymentFailed]);
 
    // Update countdown every second
-  useEffect(() => {
-    let timer;
-    if (upiLink && countdown > 0) {
-      timer = setInterval(() => {
-        setCountdown(prevCountdown => prevCountdown - 1);
-      }, 1000);
-    } else if (countdown === 0 && !paymentSuccess) {
-      setPaymentFailed(true); // Timeout if countdown reaches 0
-    }
-    return () => clearInterval(timer);
-  }, [upiLink, countdown, paymentSuccess])
+  // useEffect(() => {
+  //   let timer;
+  //   if (upiLink && countdown > 0) {
+  //     timer = setInterval(() => {
+  //       setCountdown(prevCountdown => prevCountdown - 1);
+  //     }, 1000);
+  //   } else if (countdown === 0 && !paymentSuccess) {
+  //     setPaymentFailed(true); // Timeout if countdown reaches 0
+  //   }
+  //   return () => clearInterval(timer);
+  // }, [upiLink, countdown, paymentSuccess])
 
   const checkPaymentStatus = async (transactionId) => {
     try {
@@ -297,7 +297,7 @@ const SevaDetailsForm = () => {
           ) : (
             <>
           <div className="qr-code-card">
-          <p>Time Remaining: {Math.floor(countdown / 60)}:{('0' + (countdown % 60)).slice(-2)} minutes</p>
+          {/* <p>Time Remaining: {Math.floor(countdown / 60)}:{('0' + (countdown % 60)).slice(-2)} minutes</p> */}
             <h2>Total Amount: {calculateTotalAmount()} /-</h2>
             <h2>Scan to Pay</h2>
             <QRCode value={upiLink} size={256} />
