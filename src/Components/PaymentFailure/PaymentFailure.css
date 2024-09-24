@@ -6,10 +6,12 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    margin: 2rem;
+    margin: 10px;
     min-height: 80vh;
+    width: 120vh;
     padding: 20px;
     background-color: #f4f4f9;
+    border-radius: 10px;
   }
 
 .payment-failure h1 {

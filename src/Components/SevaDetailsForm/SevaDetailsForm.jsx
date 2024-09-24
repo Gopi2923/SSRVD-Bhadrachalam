@@ -4,11 +4,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import QRCode from 'qrcode.react';
 import { TailSpin } from 'react-loader-spinner';
 import arrow_icon from './../../assets/arrow_icon.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import './SevaDetailsForm.css';
 
 const SevaDetailsForm = () => {
   const { state } = useLocation();
-  const { cart } = state;
+  const location = useLocation();
+  const { cart } = state || { cart: [] };
 
   // Check if all items in the cart have a limitation of '1'
   const hasOnlyLimitationOne = cart.every(item => item.limitation === '1');
@@ -24,6 +27,8 @@ const SevaDetailsForm = () => {
   const [transactionId, setTransactionId] = useState('');
   const [orderId, setOrderId] = useState('');
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentFailed, setPaymentFailed] = useState(false);
+  const [countdown, setCountdown] = useState(120);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,22 +41,31 @@ const SevaDetailsForm = () => {
       timeout = setTimeout(() => {
         clearInterval(interval);
         if (!paymentSuccess) {
-          navigate('/paymentfailure', {
-            state: {
-              transactionId,
-              totalAmount: calculateTotalAmount(),
-              errorMessage: 'Payment timed out. Please try again'
-            }
-          });
+          setPaymentFailed(true); // Mark as payment failed
         }
-      }, 180000);
+      }, 120000); // 2 minutes timeout
     }
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
-      localStorage.removeItem('cart');
+      if (!paymentSuccess && !paymentFailed) {
+        localStorage.removeItem('cart'); // Clear cart if navigating without retry
+      }
     };
-  }, [transactionId, paymentSuccess]);
+  }, [transactionId, paymentSuccess, paymentFailed]);
+
+   // Update countdown every second
+  useEffect(() => {
+    let timer;
+    if (upiLink && countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown(prevCountdown => prevCountdown - 1);
+      }, 1000);
+    } else if (countdown === 0 && !paymentSuccess) {
+      setPaymentFailed(true); // Timeout if countdown reaches 0
+    }
+    return () => clearInterval(timer);
+  }, [upiLink, countdown, paymentSuccess])
 
   const checkPaymentStatus = async (transactionId) => {
     try {
@@ -202,6 +216,14 @@ const SevaDetailsForm = () => {
     }
   };
 
+  const retryPayment = () => {
+    setPaymentFailed(false);
+    setTransactionId(''); // Reset transaction ID
+    setUpiLink(''); // Reset UPI link
+    handleSubmit(); // Retry the payment
+  };
+
+
   const calculateTotalAmount = () => {
     return cart.reduce((total, item) => total + item.quantity * item.price, 0);
   };
@@ -254,11 +276,34 @@ const SevaDetailsForm = () => {
         </form>
       ) : (
         <div className="qr-code-container">
+            {paymentFailed ? (
+            <>
+             <div className="payment-failure">
+        <div>
+          <h1>Payment Failed</h1>
+          <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: 'red', margin: '10px 0' }} />
+          <div className="payment-details">
+            <p>Payment ID: {transactionId}</p>
+            <p>Amount: {calculateTotalAmount()}/- INR</p>
+            <p>Error: {'Time Out'}</p>
+          </div>
+          <p>Sorry, your payment could not be processed. Please try again.</p>
+          <button onClick={retryPayment} className='try-again-btn'>Try Again</button>
+        </div>
+      </div>
+              {/* <h2>Payment Timeout</h2> */}
+             
+            </>
+          ) : (
+            <>
           <div className="qr-code-card">
+          <p>Time Remaining: {Math.floor(countdown / 60)}:{('0' + (countdown % 60)).slice(-2)} minutes</p>
             <h2>Total Amount: {calculateTotalAmount()} /-</h2>
             <h2>Scan to Pay</h2>
             <QRCode value={upiLink} size={256} />
           </div>
+          </>
+          )}
         </div>
       )}
     </div>
