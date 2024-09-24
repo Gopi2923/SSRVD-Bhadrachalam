@@ -67,38 +67,39 @@ const SevaDetailsForm = () => {
   //   return () => clearInterval(timer);
   // }, [upiLink, countdown, paymentSuccess])
 
-  const checkPaymentStatus = async (transactionId) => {
-    try {
-      const response = await axios.get(`https://ssrvd.onrender.com/payment-gateway/paymentStatus/${transactionId}`);
-      if (response.data.data.success === true) {
-        setPaymentSuccess(true);
-        navigate('/paymentsuccess', { state: { transactionId: response.data.data.transaction_id, totalAmount: calculateTotalAmount(), cart } }); // Redirect to paymentSuccess page
-        localStorage.removeItem('cart');
-  
-         // Construct the payload for the POST request
-      //  const statusUpdatePayload = {
-      //   updateBookingStatus: true,
-      //   order_id: orderId,
-      //   transaction_no: transactionId,
-      //   status: 'success'
-      // };
+const checkPaymentStatus = async (transactionId) => {
+  try {
+    const response = await axios.get(`https://ssrvd.onrender.com/payment-gateway/paymentStatus/${transactionId}`);
 
-      // // Make the POST request with the appropriate headers
-      // const statusUpdateResponse = await axios.post('https://ssrvd.onrender.com/payment-gateway/updateBhadhraChalam', statusUpdatePayload, {
-      //   headers: {
-      //     'Apikey': 'a9e0f8a33497dbe0de8ea0e154d2a090',
-      //     'Content-Type': 'application/json',
-      //     'Ver': '1.0',
-      //   },
-      // });
-  
-      //   console.log('Status update response:', statusUpdateResponse.data);
+    if (response.data.data.success === true) {
+      // Set payment success and clear the cart
+      setPaymentSuccess(true);
 
+      // Call the API to update payment status in the receipt
+      try {
+        const updateReceipt = await axios.get(`https://ssrvd.onrender.com/user-reciept/updatePaymentStatusInReciept/${transactionId}`);
+        console.log('Receipt updated successfully:', updateReceipt.data);
+      } catch (receiptError) {
+        console.error('Error updating payment status in receipt:', receiptError);
       }
-    } catch (error) {
-      console.error('Error checking payment status:', error);
+
+      // Navigate to payment success page with relevant details
+      navigate('/paymentsuccess', {
+        state: {
+          transactionId: response.data.data.transaction_id,
+          totalAmount: calculateTotalAmount(),
+          cart
+        }
+      });
+
+      // Clear the cart from localStorage
+      localStorage.removeItem('cart');
     }
-  };
+  } catch (error) {
+    console.error('Error checking payment status:', error);
+  }
+};
+
   
 
   const handleChange = (e) => {
