@@ -43,7 +43,7 @@ const SevaDetailsForm = () => {
         if (!paymentSuccess) {
           setPaymentFailed(true); // Mark as payment failed
         }
-      }, 120000); // 2 minutes timeout
+      }, 180000); // 2 minutes timeout
     }
     return () => {
       clearInterval(interval);
@@ -93,6 +93,7 @@ const SevaDetailsForm = () => {
       // });
   
       //   console.log('Status update response:', statusUpdateResponse.data);
+
       }
     } catch (error) {
       console.error('Error checking payment status:', error);
