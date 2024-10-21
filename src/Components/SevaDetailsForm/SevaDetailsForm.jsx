@@ -299,13 +299,13 @@ const checkPaymentStatus = async (transactionId) => {
             </>
           ) : (
             <>
-          <div className="qr-code-card">
-          {/* <p>Time Remaining: {Math.floor(countdown / 60)}:{('0' + (countdown % 60)).slice(-2)} minutes</p> */}
+          {/* <div className="">
+          <p>Time Remaining: {Math.floor(countdown / 60)}:{('0' + (countdown % 60)).slice(-2)} minutes</p>
             <h2>Total Amount: {calculateTotalAmount()} /-</h2>
             <h2>Scan to Pay</h2>
-             {/* <QRCode value={upiLink} size={256} /> */}
-             <img src={upiLink} alt="" width='250px' height='350px'/>
-          </div>
+             <QRCode value={upiLink} size={256} /> */}
+             <img src={upiLink} alt="QRCode" class="qr-code-card" />
+          {/* </div> */}
           </>
           )}
         </div>
