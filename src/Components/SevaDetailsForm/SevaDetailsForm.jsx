@@ -176,8 +176,9 @@ const checkPaymentStatus = async (transactionId) => {
 
       if(receiptResponse){
         let body = {
-          order_id: receiptResponse.data.order_id
-        }
+          order_id: receiptResponse.data.order_id,
+          amount: calculateTotalAmount() * 100
+          }
         console.log("body",body)
         const transactionResponse = await axios.post('https://ssrvd.onrender.com/payment-gateway/generatePaymentLink', body, {
           headers: {
@@ -186,7 +187,7 @@ const checkPaymentStatus = async (transactionId) => {
         });
         console.log("transactionResponse",transactionResponse)
         console.log("transactionResponse.data.short_url",transactionResponse.data.short_url)
-        const  upi_intent_link  = transactionResponse.data.paymentLink.short_url;
+        const  upi_intent_link  = transactionResponse.data.image_url;
         setUpiLink(upi_intent_link);
         console.log(upi_intent_link)
         setLoading(false);
@@ -302,7 +303,8 @@ const checkPaymentStatus = async (transactionId) => {
           {/* <p>Time Remaining: {Math.floor(countdown / 60)}:{('0' + (countdown % 60)).slice(-2)} minutes</p> */}
             <h2>Total Amount: {calculateTotalAmount()} /-</h2>
             <h2>Scan to Pay</h2>
-            <QRCode value={upiLink} size={256} />
+             {/* <QRCode value={upiLink} size={256} /> */}
+             <img src={upiLink} alt="" width='250px' height='350px'/>
           </div>
           </>
           )}
