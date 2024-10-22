@@ -177,7 +177,7 @@ const checkPaymentStatus = async (transactionId) => {
       if(receiptResponse){
         let body = {
           order_id: receiptResponse.data.order_id,
-          amount: calculateTotalAmount() * 100
+          amount: 100
           }
         console.log("body",body)
         const transactionResponse = await axios.post('https://ssrvd.onrender.com/payment-gateway/generatePaymentLink', body, {
